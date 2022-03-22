@@ -1,0 +1,20 @@
+{% extends 'wall/base_home.html' %}
+{% load static %}
+
+{% block content_home %}
+
+<div id="post_detail">
+    <div id="post">
+        <img class="rounded-circle" alt="Cinque Terre" width="50" height="50" id="user_image_id">
+        <h2 id="username_id"></h2>
+        <p id="message_id"></p>    
+        <small id="date_id"></small>
+    </div>
+    <div id="operations" class="mt-1">
+        <button class="btn btn-sm btn-info">Update</button>
+        <button class="btn btn-sm btn-danger">Delete</button>
+    </div>
+</div>
+<script src="{% static 'wall/js/posts_api.js' %}"></script>
+<script> get_post_details();</script>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "wall/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content_base_home %}
+<script src="{% static 'user/js/register.js' %}"></script>
+<div class="col-sm-1"></div>
+<div class="col-sm-4">
+    <h3>Sign Up</h3>
+    <!-- <form method="POST" id="register_form"> -->
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" placeholder="Enter email" id="email" name="email">
+        </div>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="username" class="form-control" placeholder="Enter username" id="username" name="username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" placeholder="Enter password" id="password" name="password">
+        </div>
+        <button class="btn btn-primary" onclick="register()">Sign Up</button>
+    <!-- </form> -->
+</div>
+<div class="col-sm-4"></div>
+
+{% endblock %}

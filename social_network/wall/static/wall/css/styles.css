@@ -1,0 +1,24 @@
+.navbar-align-right {
+    position: fixed;
+    right: 100px;
+}
+
+.home-container {
+    height: 600px;
+    overflow-y: auto;
+}
+
+.hide {
+    display: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    color:#00A0C6; 
+    text-decoration:none; 
+    cursor:pointer;  
+}

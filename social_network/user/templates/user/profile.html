@@ -1,0 +1,26 @@
+<!-- {% extends "wall/base.html" %}
+{% block content %}
+  <div class="well">
+    <img class="img-circle account-img" src="{{ user.profile.image.url }}" width="200" height="200">
+    <div class="media-body">
+      <h2 class="account-heading">{{ user.username }}</h2>
+      <p class="text-secondary">{{ user.email }}</p>
+    </div>
+  </div>
+  <div class="content-section">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">
+          Profile Info
+        </legend>
+        {{ u_form }}
+        {{ p_form }}
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-outline-info" type="submit">Update</button>
+      </div>
+    </form>
+  </div>
+  
+{% endblock content %} -->

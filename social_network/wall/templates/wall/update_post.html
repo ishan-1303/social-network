@@ -1,0 +1,19 @@
+{% extends 'wall/base_home.html' %}
+{% load static %}
+{% block content_home %}
+<script src="{% static 'wall/js/posts_api.js' %}"></script>
+<h2>Create Post</h2>
+  <!-- <form enctype="multipart/form-data" id="create_post"> -->
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="content">Content:</label>
+      <input type="text" class="form-control" id="content_id" placeholder="Enter messgae" name="content">
+      <!-- <input type="text" class="form-control" id="author_id" placeholder="Enter messgae" name="author" hidden value="1"> -->
+    </div>
+    <!-- <div class="form-group">
+      <label for="image">Image:</label>
+      <input type="file" id="image">
+    </div> -->
+    <button class="btn btn-primary" onclick="create_post()">Post</button>
+  <!-- </form> -->
+{% endblock %}
