@@ -2,22 +2,26 @@ function create_post() {
     var actionUrl = 'http://localhost:8000/posts/';
     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     console.log(csrftoken)
-    const json = {
-        'content': content_id.value,
-        // 'author': author_id.value
-    };
+    formdata = new FormData();
+    formdata.append("content", content_id.value);
+    var file = $("#image")[0].files[0];
+   
+    formdata.append("image", file);
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
         }
     });
-   
+    
     $.ajax({
         type: "POST",
         url: actionUrl,
-        data: json, // serializes the form's elements.
+        data: formdata, // serializes the form's elements.
+        processData: false,
+        contentType: false,
         success: function(data)
         {
+            // console.log(data)
             window.location.href = 'http://localhost:8000/' + data;
         }
     });
@@ -70,4 +74,8 @@ function get_post_details() {
     username_id.innerHTML = user_data.username;
     message_id.innerHTML = post_data.content;
     date_id.innerHTML = d + ' ' + t;
+    if(post_data.image != undefined) {
+        image_id.src = post_data.image;
+        image_id.classList.remove('d-none');
+    }
 }

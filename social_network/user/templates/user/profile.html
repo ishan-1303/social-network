@@ -1,26 +1,34 @@
-<!-- {% extends "wall/base.html" %}
-{% block content %}
+{% extends "wall/base_home.html" %}
+{% load static %}
+{% block content_home %}
+<script src="{% static 'user/js/user_api.js' %}"></script>
   <div class="well">
-    <img class="img-circle account-img" src="{{ user.profile.image.url }}" width="200" height="200">
+    <img class="img-circle account-img" src="" width="200" height="200" id="user_image_id">
     <div class="media-body">
-      <h2 class="account-heading">{{ user.username }}</h2>
-      <p class="text-secondary">{{ user.email }}</p>
+      <h2 class="account-heading" id="username_id">Username</h2>
+    </div>
+    <div id="operations" class="mt-1">
+        <button class="btn btn-sm btn-info" onclick="show_edit_profile(this)" id="edit_btn">Edit Profile</button>
     </div>
   </div>
-  <div class="content-section">
-    <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      <fieldset class="form-group">
-        <legend class="border-bottom mb-4">
-          Profile Info
-        </legend>
-        {{ u_form }}
-        {{ p_form }}
-      </fieldset>
-      <div class="form-group">
-        <button class="btn btn-outline-info" type="submit">Update</button>
-      </div>
-    </form>
+  <div class="col-sm-1"></div>
+  <div class="col-sm-4 d-none" id="edit_profile">
+      <h3>Edit Profile</h3>
+      <!-- <form method="POST" id="register_form"> -->
+          {% csrf_token %}
+          <div class="form-group">
+              <label for="username">Username:</label>
+              <input type="username" class="form-control" placeholder="Enter username" id="username" name="username">
+          </div>
+          <div class="form-group">
+            <label for="image">Image:</label>
+            <input type="file" id="image">
+          </div>
+          <button class="btn btn-primary" onclick="edit_user_profile()">Save</button>
+      <!-- </form> -->
   </div>
-  
-{% endblock content %} -->
+  <div class="col-sm-4"></div>
+  <script>
+    get_user_profile();
+  </script>
+{% endblock %}

@@ -1,3 +1,4 @@
+from base64 import b64encode
 from django.shortcuts import render, get_object_or_404
 from pytz import timezone
 from rest_framework.views import APIView
@@ -16,7 +17,7 @@ def profile(request):
 
 class ProfileView(APIView):
     def get(self, request):
-        data = request.GET.get('id')
+        data = request.GET.get('id', request.user.id)
         #return Response(data, content_type='application/json')
         user = User.objects.get(pk=data)
         #serialized = ProfileSerializer(user.profile)
@@ -44,6 +45,28 @@ class ProfileView(APIView):
             return Response("Added Successfully")
 
         return Response("Failed")
+
+    def put(self, request):
+        put_data = {}
+        username = request.POST.get('username')
+        image = request.FILES.get('image', None)
+        user = User.objects.get(id=request.user.id)
+        user.username = username
+        user.save()
+        profile = Profile.objects.get(user=user.id)
+        put_data['user'] = user.id
+        put_data['image'] = image
+        #return Response(b64encode(image.read()))
+        serializer = ProfileSerializer(profile, data=put_data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Updated Successfully")
+        else:
+             return Response(serializer.errors)
+
+        return Response("Failed")
+
+
 
 def register(request):
     return render(request, 'user/register.html')

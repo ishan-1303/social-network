@@ -37,7 +37,10 @@ function render_posts(data) {
         post_tag += '<a href="http://localhost:8000/post/' + posts[i].id + '/">'
         post_tag += '<img src="' + user_data.image + '" class="rounded-circle" alt="Cinque Terre" width="50" height="50">'
         post_tag += '<h2>' + user_data.username + '</h2>';
-        post_tag += '<p>' + posts[i].content + '</p>';      
+        if(posts[i].image != undefined) {
+            post_tag += '<img src="' + posts[i].image + '" width="200"></img>';    
+        }  
+        post_tag += '<p>' + posts[i].content + '</p>';    
         post_tag += '<small>' + d + ' ' + t + '</small>';  
         post_tag += '</a>'
         post_tag += '<p><button class="btn btn-sm btn-info" onclick="like_post(this)" id="' + posts[i].id + '">Like </button> <span id="post' + posts[i].id + '">' + posts[i].likes.length + ' likes </span></p>';  
@@ -53,7 +56,8 @@ function like_post(current_post) {
     var actionUrl = "http://localhost:8000/posts/";
     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     json = {
-        post_id: current_post.id
+        post_id: current_post.id,
+        'like': 'true'
     };
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {

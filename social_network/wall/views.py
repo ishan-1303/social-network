@@ -1,3 +1,4 @@
+from base64 import b64encode
 from django.shortcuts import render, get_object_or_404
 from pytz import timezone
 from rest_framework.views import APIView
@@ -16,7 +17,7 @@ class PostView(APIView):
             posts = Post.objects.get(id=request.GET.get('id'))
             serialized = PostSerializer(posts)
         else:
-            posts = Post.objects.all().order_by('-date_posted')
+            posts = Post.objects.all().order_by('-date_posted')[:10]
             serialized = PostSerializer(posts, many = True)
         
         return Response(serialized.data, content_type='application/json')
@@ -25,9 +26,9 @@ class PostView(APIView):
         post_data = {}
         post_data['content'] = request.POST.get('content', '')
         post_data['author'] = request.user.id #request.POST.get('author', '')
-        post_data['image'] = None
+        post_data['image'] = request.FILES.get('image', None)
+        #return Response(b64encode(request.FILES.get('image').read()))
         post_data['likes'] = []
-        #return Response(post_data)
         serializer = PostSerializer(data=post_data)
         if serializer.is_valid():
             obj = serializer.save()
@@ -37,27 +38,27 @@ class PostView(APIView):
 
     def put(self, request):
         put_data = {}
-        input = {}
-        input['post_id'] = request.POST.get('post_id', '')
-        # input['author_liked'] = request.user.id
-        current_user = User.objects.get(id=request.user.id)
-        current_post = Post.objects.get(id=input['post_id'])
-        likes = current_post.likes.all()
+        if request.POST.get('like') == 'true':
+            post_id = request.POST.get('post_id')
+            # input['author_liked'] = request.user.id
+            current_user = User.objects.get(id=request.user.id)
+            current_post = Post.objects.get(id=post_id)
+            likes = current_post.likes.all()
 
-        put_data['image'] = None #Post.objects.get(id=input['post_id']).image
-        put_data['likes'] = current_post.likes
-        put_data['content'] = current_post.content
-        put_data['author'] = current_post.id
+            # put_data['image'] = None #Post.objects.get(id=input['post_id']).image
+            put_data['likes'] = current_post.likes
+            # put_data['content'] = current_post.content
+            # put_data['author'] = current_post.id
 
-        if current_user in likes:
-            put_data['likes'].remove(User.objects.get(id=request.user.id))
-        else:
-            put_data['likes'].add(User.objects.get(id=request.user.id))
-        #return Response(put_data)
-        serializer = PostSerializer(data=put_data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response("Added Successfully")
+            if current_user in likes:
+                put_data['likes'].remove(User.objects.get(id=request.user.id))
+            else:
+                put_data['likes'].add(User.objects.get(id=request.user.id))
+            #return Response(put_data)
+            serializer = PostSerializer(current_post, data=put_data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response("Added Successfully")
 
         return Response("Failed")
 

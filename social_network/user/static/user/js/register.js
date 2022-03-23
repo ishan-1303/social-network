@@ -1,9 +1,9 @@
+
 function register() {
-    var actionUrl = 'http://localhost:8000/user/';
     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     const json = {
         'username': username.value,
-        'email': email.value,
+        // 'email': email.value,
         'password': password.value,
     };
     $.ajaxSetup({
@@ -26,3 +26,6 @@ function register() {
         }
     });
 }
+
+
+
