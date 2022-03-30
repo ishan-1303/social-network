@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from django.contrib.auth.decorators import login_required
 
-from wall.serializers import PostSerializer
-from .models import Post
+from wall.serializers import PostSerializer, CommentSerializer
+from .models import Post, Comment
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -40,15 +40,11 @@ class PostView(APIView):
         put_data = {}
         if request.POST.get('like') == 'true':
             post_id = request.POST.get('post_id')
-            # input['author_liked'] = request.user.id
             current_user = User.objects.get(id=request.user.id)
             current_post = Post.objects.get(id=post_id)
             likes = current_post.likes.all()
 
-            # put_data['image'] = None #Post.objects.get(id=input['post_id']).image
             put_data['likes'] = current_post.likes
-            # put_data['content'] = current_post.content
-            # put_data['author'] = current_post.id
 
             if current_user in likes:
                 put_data['likes'].remove(User.objects.get(id=request.user.id))
@@ -62,6 +58,29 @@ class PostView(APIView):
 
         return Response("Failed")
 
+class CommentView(APIView):
+    def get(self, request):
+        post_id = request.GET.get('post_id')
+        #return Response(post_id)
+        comments = Comment.objects.filter(post=post_id)
+        serialized = CommentSerializer(comments, many = True)
+        return Response(serialized.data, content_type='application/json')
+
+    def post(self, request):
+        post_id = request.POST.get('post_id')
+        comment = request.POST.get('comment')
+        comment_author = request.user.id
+
+        comment_data = {}
+        comment_data['post'] = post_id
+        comment_data['comment'] = comment
+        comment_data['comment_author'] = comment_author
+        serializer = CommentSerializer(data=comment_data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Added Successfully")
+        
+        return Response("Failed")
 
 @login_required
 def homepage(request):
@@ -74,5 +93,6 @@ def create_post(request):
 @login_required
 def post_detail(request, pk):
     return render(request, 'wall/post_detail.html')
+
 
 

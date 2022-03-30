@@ -20,11 +20,11 @@ class Post(models.Model):
     def number_of_likes(self):
         return self.likes.count()
 
-# class Comment(models.Model):
-#     comment = models.CharField(max_length=200, blank=True, default='')
-#     author = models.ForeignKey(User, on_delete=models.CASCADE)
-#     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-#     created = models.DateTimeField(default=timezone.now)
+class Comment(models.Model):
+    comment = models.CharField(max_length=200, blank=True, default='')
+    comment_author = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    created = models.DateTimeField(default=timezone.now)
 
-#     class Meta:
-#         ordering = ('-created',)
+    class Meta:
+        ordering = ('-created',)
