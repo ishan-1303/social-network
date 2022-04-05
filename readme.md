@@ -2,9 +2,6 @@
 <h5>Tasks:</h5>
 <ul>
   <li>
-    Working on development of social networking application using Django, PostgreSQL and REST API
-  </li>
-  <li>
     The application has functionality to create, update, delete, view and like posts as well as create and update profile
   </li>
   <li>
