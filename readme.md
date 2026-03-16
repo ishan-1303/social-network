@@ -1,4 +1,4 @@
-# Social Network Application usind Django
+# Social Network Application using Django
 <h5>Tasks:</h5>
 <ul>
   <li>
